@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  server:
+    image: kylemanna/openvpn
+    volumes:
+      - ./data:/etc/openvpn
+    ports:
+      - "1194:1194/udp"
+    cap_add: 
+      - NET_ADMIN
+  client:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    devices:
+      - /dev/net/tun
+    cap_add:
+      - NET_ADMIN
+    depends_on:
+      - server
